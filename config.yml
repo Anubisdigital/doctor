@@ -1,0 +1,33 @@
+backend:
+  # The name of your GitHub repository.
+  name: github
+  repo: Anubisdigital/doctor
+  branch: main # Or master, depending on your repository's default branch.
+
+# This section tells the CMS how to authenticate users.
+publish_mode: editorial_workflow
+
+# The base path to the Decap CMS admin files.
+media_folder: "assets/uploads" # Where images/files will be stored
+public_folder: "/assets/uploads" # The public path to the images/files
+
+# Define the content types (Collections) that users can edit in the CMS.
+collections:
+  - name: "posts"
+    label: "Blog Posts"
+    folder: "_posts" # Files will be stored in a folder called _posts
+    create: true # Allow users to create new posts
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    fields: # The fields (inputs) the user sees in the CMS
+      - {label: "Title", name: "title", widget: "string"}
+      - {label: "Publish Date", name: "date", widget: "datetime"}
+      - {label: "Featured Image", name: "image", widget: "image", required: false}
+      - {label: "Body", name: "body", widget: "markdown"}
+
+  - name: "pages"
+    label: "Site Pages"
+    folder: "_pages"
+    create: true
+    fields:
+      - {label: "Title", name: "title", widget: "string"}
+      - {label: "Body", name: "body", widget: "markdown"}
