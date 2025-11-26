@@ -1,43 +1,198 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Doctor Site - CMS Example</title>
+    <title>Cyber Device Scanner</title>
     <style>
-        body { font-family: sans-serif; line-height: 1.6; margin: 20px; }
-        .hero { text-align: center; padding: 50px 20px; background: #f4f4f4; }
-        .images { display: flex; justify-content: space-around; margin-top: 20px; }
-        .images img { width: 23%; height: auto; border-radius: 8px; }
-        footer { margin-top: 50px; text-align: center; padding: 10px; border-top: 1px solid #ccc; }
-        /* Simple CSS for demonstration. You would use a separate 'style.css' in a real project. */
+        body {
+            background: black;
+            color: #00ff55;
+            font-family: "Courier New", monospace;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .title {
+            text-align: center;
+            color: #00ff55;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+        }
+
+        .section {
+            border: 1px solid #00ff55;
+            background: #0a0a0a;
+            margin-bottom: 20px;
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        .label {
+            color: #00ff55;
+            font-size: 1.2em;
+            margin-bottom: 8px;
+        }
+
+        .value {
+            font-size: 2.3em;
+            font-weight: bold;
+            color: red;
+            text-shadow: 0 0 10px red;
+        }
+
+        #terminal {
+            height: 280px;
+            overflow-y: auto;
+            background: #000;
+            border: 1px solid #00ff55;
+            padding: 15px;
+            border-radius: 10px;
+            line-height: 1.32em;
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 10px;
+            background: #00ff55;
+            animation: blink 0.6s infinite;
+        }
+
+        @keyframes blink {
+            0%,50% { background:#00ff55; }
+            51%,100% { background:transparent; }
+        }
     </style>
 </head>
 <body>
 
-    <header class="hero">
-        <h1>Welcome to the Doctor Site</h1>
-        <p>Managed with Decap CMS</p>
-    </header>
+<h1 class="title">📡 REAL-TIME CYBER DEVICE DIAGNOSTIC SYSTEM</h1>
 
-    <main>
-        <h2>Our Facility</h2>
-        <p>This is where content managed by the CMS will eventually appear. For now, here are the images you specified:</p>
+<!-- DEVICE TYPE -->
+<div class="section">
+    <div class="label">Detected Device Type:</div>
+    <div id="deviceType" class="value">Detecting...</div>
+</div>
 
-        <div class="images">
-            <img src="img1.jpg" alt="Facility Image 1">
-            <img src="img2.jpg" alt="Facility Image 2">
-            <img src="img3.jpg" alt="Facility Image 3">
-            <img src="img4.jpg" alt="Facility Image 4">
-        </div>
-    </main>
+<!-- BATTERY -->
+<div class="section">
+    <div class="label">Battery Status:</div>
+    <div id="batteryLevel" class="value">--%</div>
+    <div id="batteryStatus" class="label" style="margin-top:8px;"></div>
+</div>
 
-    <footer>
-        <p>&copy; 2025 Doctor Site.</p>
-        <p>
-            <a href="/admin/" style="color: blue; text-decoration: none;">Go to Admin (CMS) Panel</a>
-        </p>
-    </footer>
+<!-- TERMINAL -->
+<div class="section">
+    <div id="terminal"></div>
+    <div class="cursor"></div>
+</div>
+
+<script>
+/* ------------------------------ TYPING EFFECT ------------------------------ */
+function typeText(element, text, speed, callback) {
+    let i = 0;
+    let interval = setInterval(() => {
+        element.textContent += text[i];
+        i++;
+        if (i >= text.length) {
+            clearInterval(interval);
+            if (callback) callback();
+        }
+    }, speed);
+}
+
+/* ------------------------------ TERMINAL LOGGER ------------------------------ */
+const terminal = document.getElementById("terminal");
+
+function terminalType(text, speed = 20, newline = true) {
+    return new Promise(resolve => {
+        let line = document.createElement("div");
+        terminal.appendChild(line);
+        let i = 0;
+        let interval = setInterval(() => {
+            line.textContent += text[i];
+            i++;
+            terminal.scrollTop = terminal.scrollHeight;
+            if (i >= text.length) {
+                clearInterval(interval);
+                if (newline) terminal.appendChild(document.createElement("br"));
+                resolve();
+            }
+        }, speed);
+    });
+}
+
+/* ------------------------------ DEVICE TYPE DETECTION ------------------------------ */
+function detectDevice() {
+    const ua = navigator.userAgent;
+    if (/iPhone/i.test(ua)) return "APPLE iPhone";
+    if (/iPad/i.test(ua)) return "APPLE iPad";
+    if (/Samsung/i.test(ua)) return "SAMSUNG Smartphone";
+    if (/Pixel/i.test(ua)) return "GOOGLE Pixel";
+    if (/Android/i.test(ua)) return "ANDROID Device";
+    if (/Windows/i.test(ua)) return "WINDOWS Machine";
+    if (/Macintosh/i.test(ua)) return "MAC Computer";
+    return "UNKNOWN Device";
+}
+
+const deviceText = detectDevice();
+document.getElementById("deviceType").textContent = deviceText;
+
+/* ------------------------------ TERMINAL STORY ------------------------------ */
+async function runTerminalSequence() {
+    await terminalType("[SYSTEM] Initializing advanced scan modules...");
+    await terminalType("[PROCESS] Allocating memory cores...");
+    await terminalType("[PROCESS] Routing encrypted diagnostic packets...");
+    await terminalType("[SCAN] Establishing handshake with local device...");
+    await terminalType("[SUCCESS] Secure link confirmed.");
+    await terminalType("[DEVICE] Interpreting device fingerprints...");
+    await terminalType("[RESULT] Device identified as: " + deviceText);
+    await terminalType("----------------------------------------------------------");
+    await terminalType("[ANALYZER] Scanning hardware architecture...");
+    await terminalType("[ANALYZER] Checking thermal regulators...");
+    await terminalType("[ANALYZER] Syncing sensor arrays...");
+    await terminalType("[ANALYZER] Parsing kernel responses...");
+    await terminalType("[INFO] System integrity stable.");
+    await terminalType("[INFO] Fetching battery cells for evaluation...");
+    await terminalType("[INFO] Monitoring live power consumption...");
+    await terminalType("[SYSTEM] Listening for real‑time updates...");
+}
+
+runTerminalSequence();
+
+/* ------------------------------ BATTERY STATUS ------------------------------ */
+function updateBattery(battery) {
+    const level = Math.round(battery.level * 100);
+    document.getElementById("batteryLevel").textContent = level + "%";
+
+    let status = "";
+    if (battery.charging) {
+        status = "⚡ Device is Charging";
+        terminalType("[POWER] Charging detected. Power grid stabilized.");
+    } else {
+        if (level <= 20) {
+            status = "⚠️ LOW BATTERY WARNING";
+            terminalType("[ALERT] Battery critically low. Activate power‑saving measures!");
+        } else {
+            status = "Battery Discharging Normally";
+            terminalType("[POWER] Battery level nominal. System steady.");
+        }
+    }
+    document.getElementById("batteryStatus").textContent = status;
+}
+
+if (navigator.getBattery) {
+    navigator.getBattery().then(battery => {
+        updateBattery(battery);
+        battery.addEventListener("levelchange", () => updateBattery(battery));
+        battery.addEventListener("chargingchange", () => updateBattery(battery));
+    });
+} else {
+    document.getElementById("batteryLevel").textContent = "N/A";
+    document.getElementById("batteryStatus").textContent = "Battery API not supported.";
+    terminalType("[ERROR] Battery API not supported on this device.");
+}
+</script>
 
 </body>
 </html>
